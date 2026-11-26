@@ -1,6 +1,7 @@
-Enterprise Hub
-================
+# Enterprise Hub — сайт
 
-Страница приложения: https://enterpc-core.github.io/enterprise-hub/
+Статическая страница приложения: https://enterpc-core.github.io/enterprise-hub/
 
-Сборки пока не публикуются — релиз будет отдельно.
+Приложение: [релизы](https://github.com/EnterPC-Core/EnterpriseHub-Releases/releases) · исходники приватны.
+
+Лицензия: проприетарная, см. LICENSE в репозитории релизов.

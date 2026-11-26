@@ -1,331 +1,230 @@
-<!doctype html>
-<html lang="ru">
+<!DOCTYPE html>
+<html lang="ru" data-theme="dark">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Enterprise Hub — центр управления Android-устройством</title>
-<meta name="description" content="Enterprise Hub: монитор ресурсов, карта памяти, разбор устройства в 3D, сравнение смартфонов. Без аккаунтов, подписок и телеметрии.">
-<link rel="icon" href="img/home.jpg">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Enterprise Hub — паспорт вашего Android-устройства</title>
+<meta name="description" content="Enterprise Hub — приложение для Android: подробные данные о железе, экране, памяти, батарее, камерах и датчиках. Монитор в реальном времени, сравнение с каталогом моделей, тесты компонентов. Без root, без рекламы, без сбора данных.">
+<meta property="og:title" content="Enterprise Hub — паспорт вашего Android-устройства">
+<meta property="og:description" content="Железо, экран, память, камеры, датчики, связь и проверка компонентов — в одном приложении.">
+<meta property="og:image" content="img/emblem.png">
 <style>
-:root{
-  --bg:#0b0e13; --bg2:#0f131a; --card:#131822; --line:rgba(160,186,214,.16);
-  --ink:#e7edf6; --ink2:#9aa7b8; --ink3:#6d7989;
-  --accent:#4fa8ff; --accent2:#9ad8ff; --ok:#8fe0b0;
-  --max:1080px; --r:14px;
-}
-*{box-sizing:border-box}
-html,body{margin:0;background:var(--bg);color:var(--ink);
-  font:16px/1.6 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
-  -webkit-font-smoothing:antialiased}
-a{color:var(--accent);text-decoration:none}
-img{max-width:100%;display:block}
-.wrap{max-width:var(--max);margin:0 auto;padding:0 20px}
-header.top{border-bottom:1px solid var(--line);background:rgba(11,14,19,.92);position:sticky;top:0;z-index:20;
-  backdrop-filter:blur(10px)}
-.top .wrap{display:flex;align-items:center;gap:14px;height:64px}
-.logo{width:34px;height:34px;border-radius:9px;object-fit:cover;box-shadow:0 6px 16px -8px #000}
-.brand{font-weight:650;letter-spacing:-.01em}
-.brand small{display:block;font-weight:400;font-size:11.5px;color:var(--ink3);letter-spacing:.06em;text-transform:uppercase}
-nav.menu{margin-left:auto;display:flex;gap:22px;font-size:14px}
-nav.menu a{color:var(--ink2)}
-nav.menu a:hover{color:var(--ink)}
-@media (max-width:760px){nav.menu{display:none}}
+  :root{
+    --bg:#080B12; --bg2:#0C111B; --card:rgba(255,255,255,.04); --card2:rgba(255,255,255,.055);
+    --line:rgba(160,190,225,.14); --ink:#E9EDF5; --ink2:#93A2B8;
+    --accent:#4F8CFF; --accent2:#7FB2FF; --mint:#5FD39B; --amber:#F4C26B;
+    --radius:20px; --max:1080px;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  body{
+    background:
+      radial-gradient(120% 90% at 15% -10%, rgba(79,140,255,.20), transparent 55%),
+      radial-gradient(100% 80% at 92% 0%, rgba(255,122,102,.13), transparent 50%),
+      var(--bg);
+    color:var(--ink);
+    font:16px/1.55 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  a{color:inherit;text-decoration:none}
+  .wrap{max-width:var(--max);margin:0 auto;padding:0 20px}
+  .nav{position:sticky;top:0;z-index:20;backdrop-filter:blur(14px);
+    background:rgba(8,11,18,.72);border-bottom:1px solid var(--line)}
+  .nav-in{display:flex;align-items:center;gap:14px;height:62px}
+  .nav-logo{display:flex;align-items:center;gap:10px;font-weight:650;letter-spacing:-.01em}
+  .nav-logo img{width:28px;height:28px;border-radius:8px}
+  .nav-links{margin-left:auto;display:flex;gap:6px;align-items:center}
+  .nav-links a{font-size:13.5px;color:var(--ink2);padding:8px 11px;border-radius:9px}
+  .nav-links a:hover{color:var(--ink);background:rgba(255,255,255,.05)}
 
-.hero{padding:64px 0 48px;border-bottom:1px solid var(--line);
-  background:
-    radial-gradient(900px 420px at 50% -10%,rgba(79,168,255,.16),transparent 70%),
-    linear-gradient(180deg,#0d1118,#0b0e13)}
-.hero .wrap{display:grid;grid-template-columns:1.15fr .85fr;gap:44px;align-items:center}
-@media (max-width:860px){.hero .wrap{grid-template-columns:1fr;gap:28px}}
-.hero h1{font-size:clamp(30px,4.4vw,46px);line-height:1.12;margin:0 0 14px;letter-spacing:-.02em;font-weight:680}
-.hero p.lead{font-size:17px;color:var(--ink2);margin:0 0 26px;max-width:52ch}
-.tags{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:26px}
-.tag{font-size:12px;color:var(--ink2);border:1px solid var(--line);border-radius:999px;padding:5px 11px;background:rgba(255,255,255,.02)}
-.btns{display:flex;gap:12px;flex-wrap:wrap;align-items:center}
-.btn{display:inline-flex;align-items:center;gap:9px;padding:13px 20px;border-radius:11px;font-weight:600;font-size:14.5px;
-  border:1px solid transparent;transition:.16s}
-.btn.primary{background:linear-gradient(180deg,#5cb6ff,#1f6fc4);color:#fff;box-shadow:0 12px 28px -14px rgba(39,138,255,.9)}
-.btn.primary:hover{filter:brightness(1.06)}
-.btn.ghost{border-color:var(--line);color:var(--ink);background:rgba(255,255,255,.02)}
-.btn.ghost:hover{background:rgba(255,255,255,.05)}
-.meta{margin-top:18px;font-size:12.5px;color:var(--ink3)}
-.phones{display:flex;gap:14px;justify-content:center}
-.phones img{width:calc(50% - 7px);border-radius:18px;border:1px solid var(--line);box-shadow:0 24px 60px -34px #000}
-.phones img:last-child{margin-top:26px}
+  .hero{padding:72px 0 34px;text-align:center}
+  .hero .emblem{width:92px;height:92px;border-radius:24px;
+    box-shadow:0 22px 60px -22px rgba(79,140,255,.55); border:1px solid rgba(160,200,255,.18)}
+  h1{font-size:clamp(34px,6vw,54px);line-height:1.05;letter-spacing:-.025em;margin:22px 0 0}
+  .tagline{font-size:clamp(15px,2.4vw,19px);color:var(--ink2);margin:16px auto 0;max-width:640px}
+  .cta{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:28px}
+  .btn{display:inline-flex;align-items:center;gap:9px;padding:14px 22px;border-radius:14px;
+    font-weight:600;font-size:15px;border:1px solid transparent;transition:transform .15s,background .2s}
+  .btn:active{transform:scale(.985)}
+  .btn.primary{background:linear-gradient(180deg,#5B97FF,#2F6DE0);color:#fff;
+    box-shadow:0 16px 34px -18px rgba(79,140,255,.9)}
+  .btn.ghost{background:rgba(255,255,255,.045);border-color:var(--line);color:var(--ink)}
+  .btn svg{width:18px;height:18px}
+  .facts{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:26px}
+  .fact{font-size:12.5px;color:var(--ink2);padding:7px 12px;border-radius:10px;
+    background:rgba(255,255,255,.04);border:1px solid var(--line)}
+  .fact b{color:var(--ink);font-weight:600}
 
-section{padding:56px 0;border-bottom:1px solid var(--line)}
-h2{font-size:clamp(22px,3vw,30px);letter-spacing:-.015em;margin:0 0 8px;font-weight:660}
-.sub{color:var(--ink2);margin:0 0 30px;max-width:66ch}
-.grid{display:grid;gap:16px;grid-template-columns:repeat(3,1fr)}
-@media (max-width:900px){.grid{grid-template-columns:repeat(2,1fr)}}
-@media (max-width:620px){.grid{grid-template-columns:1fr}}
-.card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:20px}
-.card h3{font-size:15.5px;margin:0 0 8px;font-weight:640}
-.card p{margin:0;color:var(--ink2);font-size:13.6px;line-height:1.55}
-.card ul{margin:10px 0 0;padding-left:18px;color:var(--ink2);font-size:13.4px;line-height:1.6}
-.card li{margin:3px 0}
-.kicker{font-size:11.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink3);margin-bottom:10px}
+  section{padding:46px 0}
+  h2{font-size:clamp(22px,3.4vw,30px);letter-spacing:-.02em;margin:0 0 6px}
+  .sub{color:var(--ink2);font-size:14.5px;margin:0 0 24px}
 
-.shots{display:grid;gap:16px;grid-template-columns:repeat(4,1fr)}
-@media (max-width:900px){.shots{grid-template-columns:repeat(3,1fr)}}
-@media (max-width:620px){.shots{grid-template-columns:repeat(2,1fr)}}
-.shot{border:1px solid var(--line);border-radius:12px;overflow:hidden;background:#0d1118;cursor:zoom-in}
-.shot img{width:100%;height:auto}
-.shot figcaption{font-size:11.5px;color:var(--ink3);padding:8px 10px;border-top:1px solid var(--line)}
+  .grid{display:grid;gap:12px}
+  .g3{grid-template-columns:repeat(3,1fr)}
+  .g2{grid-template-columns:repeat(2,1fr)}
+  @media (max-width:860px){.g3{grid-template-columns:repeat(2,1fr)}}
+  @media (max-width:560px){.g3,.g2{grid-template-columns:1fr}}
 
-table{width:100%;border-collapse:collapse;font-size:14px}
-th,td{text-align:left;padding:11px 12px;border-bottom:1px solid var(--line);vertical-align:top}
-th{color:var(--ink3);font-weight:500;font-size:12.5px;letter-spacing:.04em;text-transform:uppercase}
-td.n{color:var(--ink);white-space:nowrap}
-.two{display:grid;grid-template-columns:1fr 1fr;gap:26px}
-@media (max-width:760px){.two{grid-template-columns:1fr}}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:18px}
+  .card h3{margin:0 0 6px;font-size:15.5px;letter-spacing:-.01em}
+  .card p{margin:0;color:var(--ink2);font-size:13.5px;line-height:1.5}
+  .card .ic{width:34px;height:34px;border-radius:11px;display:grid;place-items:center;margin-bottom:12px;
+    background:linear-gradient(145deg,rgba(79,140,255,.28),rgba(255,122,102,.16));color:#CFE4FF}
+  .card .ic svg{width:18px;height:18px}
 
-footer{padding:36px 0 60px;color:var(--ink3);font-size:13px}
-footer .wrap{display:flex;gap:18px;justify-content:space-between;flex-wrap:wrap}
+  .shots{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+  @media (max-width:860px){.shots{grid-template-columns:repeat(2,1fr)}}
+  @media (max-width:520px){.shots{grid-template-columns:1fr}}
+  figure{margin:0;text-align:center}
+  figure img{width:100%;border-radius:16px;border:1px solid var(--line);display:block;
+    box-shadow:0 20px 44px -30px #000}
+  figcaption{font-size:12.5px;color:var(--ink2);margin-top:9px}
+  figcaption b{color:var(--ink);font-weight:600}
 
-#lb{position:fixed;inset:0;background:rgba(5,7,11,.94);display:none;place-items:center;z-index:50;padding:20px}
-#lb.on{display:grid}
-#lb img{max-height:92vh;width:auto;border-radius:12px}
+  .tablet{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+  @media (max-width:700px){.tablet{grid-template-columns:1fr}}
+
+  .projects{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+  @media (max-width:860px){.projects{grid-template-columns:1fr}}
+  .proj{display:flex;gap:12px;align-items:center;padding:14px 15px;border-radius:16px;
+    background:var(--card);border:1px solid var(--line);transition:background .18s}
+  .proj:hover{background:var(--card2)}
+  .proj .ic{width:36px;height:36px;border-radius:11px;display:grid;place-items:center;flex:0 0 auto;
+    background:linear-gradient(145deg,rgba(79,140,255,.26),rgba(255,122,102,.16));color:#CFE4FF}
+  .proj b{font-size:14px;display:block}
+  .proj span{font-size:12px;color:var(--ink2);display:block;margin-top:2px}
+  .proj .go{margin-left:auto;color:var(--accent2);font-size:12.5px}
+
+  .note{border-radius:16px;padding:16px 18px;background:rgba(244,194,107,.07);
+    border:1px solid rgba(244,194,107,.22);color:var(--ink2);font-size:13.5px}
+  .note b{color:var(--ink)}
+
+  footer{border-top:1px solid var(--line);margin-top:26px;padding:28px 0 40px;color:var(--ink2);font-size:13px}
+  .foot-in{display:flex;gap:14px;flex-wrap:wrap;align-items:center;justify-content:space-between}
+  .foot-in a{color:var(--accent2)}
 </style>
 </head>
 <body>
 
-<header class="top">
-  <div class="wrap">
-    <img class="logo" src="img/emblem.png" alt="">
-    <div class="brand">Enterprise Hub<small>центр управления устройством</small></div>
-    <nav class="menu">
+<nav class="nav">
+  <div class="wrap nav-in">
+    <a class="nav-logo" href="#top"><img src="img/emblem.png" alt="">Enterprise Hub</a>
+    <div class="nav-links">
       <a href="#features">Возможности</a>
-      <a href="#screens">Экраны</a>
-      <a href="#data">Данные</a>
-      <a href="#install">Статус</a>
-    </nav>
+      <a href="#shots">Скриншоты</a>
+      <a href="#projects">Проекты</a>
+      <a href="https://github.com/EnterPC-Core/EnterpriseHub-Releases/releases">Релизы</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero wrap" id="top">
+  <img class="emblem" src="img/emblem.png" alt="Enterprise Hub">
+  <h1>Паспорт вашего<br>Android-устройства</h1>
+  <p class="tagline">Реальные частоты каждого ядра, маркетинговое имя процессора вместо кода,
+    ёмкость и износ батареи, характеристики камер, датчики и кодеки — в одном приложении.
+    Без root, без рекламы, без сбора данных.</p>
+  <div class="cta">
+    <a class="btn primary" href="https://github.com/EnterPC-Core/EnterpriseHub-Releases/releases">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M5 21h14"/></svg>
+      Скачать APK
+    </a>
+    <a class="btn ghost" href="https://github.com/EnterPC-Core">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 19c-4 1.5-4-2.5-6-3m12 5v-3.5c0-1 .1-1.4-.5-2 2.8-.3 4.5-1.4 4.5-5a4 4 0 0 0-1.1-2.8c.1-.9.1-1.9-.1-2.8 0 0-1.1-.3-3.5 1.3a12 12 0 0 0-6.2 0C6.7 3.3 5.6 3.6 5.6 3.6c-.2.9-.2 1.9-.1 2.8A4 4 0 0 0 4.4 9.2c0 3.6 1.7 4.7 4.5 5-.6.6-.6 1.2-.5 2V21"/>
+    </a>
+  </div>
+  <div class="facts">
+    <span class="fact">Версия <b>2.16.2</b></span>
+    <span class="fact"><b>Android 8.0+</b></span>
+    <span class="fact">Размер <b>~73 МБ</b></span>
+    <span class="fact"><b>Без рекламы</b> и трекеров</span>
+    <span class="fact">Работает <b>офлайн</b></span>
   </div>
 </header>
 
-<div class="hero">
-  <div class="wrap">
-    <div>
-      <h1>Всё об Android-устройстве<br>в одном приложении</h1>
-      <p class="lead">Мониторинг ресурсов, карта памяти с навигацией, разбор устройства в 3D,
-      сравнение смартфонов по характеристикам. Работает офлайн, без аккаунтов, подписок и телеметрии.</p>
-      <div class="tags">
-        <span class="tag">Android 8.0+</span>
-        <span class="tag">версия 2.6.1</span>
-        <span class="tag">офлайн</span>
-        <span class="tag">без рекламы</span>
-        <span class="tag">без трекеров</span>
-      </div>
-      <div class="btns">
-        <a class="btn primary" href="#screens">Посмотреть экраны</a>
-        <a class="btn ghost" href="#features">Что внутри</a>
-      </div>
-      <div class="meta">В разработке · текущая сборка 2.6.1 (versionCode 54) · Android 8.0+ · публичный релиз позже</div>
-    </div>
-    <div class="phones">
-      <img src="img/home.jpg" alt="Главный экран">
-      <img src="img/monitor.jpg" alt="Монитор">
-    </div>
-  </div>
-</div>
-
-<section id="features">
-  <div class="wrap">
-    <h2>Что внутри</h2>
-    <p class="sub">Пятнадцать разделов, каждый работает на данных самой системы. Там, где Android закрывает
-    информацию, приложение говорит об этом прямо, а не подставляет выдуманные числа.</p>
-
-    <div class="grid">
-      <div class="card">
-        <div class="kicker">Ресурсы</div>
-        <h3>Монитор</h3>
-        <p>Загрузка процессора по ядрам, частота каждого ядра, память, накопители, сеть, батарея и температуры.</p>
-        <ul>
-          <li>8 полос частот ядер в реальном времени</li>
-          <li>графики ЦП и ОЗУ за последнюю минуту</li>
-          <li>температура с указанием зоны датчика</li>
-        </ul>
-      </div>
-      <div class="card">
-        <div class="kicker">Память</div>
-        <h3>Хранилище</h3>
-        <p>Занято из общего объёма, разбивка по типам файлов и карта папок с навигацией.</p>
-        <ul>
-          <li>кольцо и плитки — два режима карты</li>
-          <li>переход в папку и возврат по хлебным крошкам</li>
-          <li>поиск дубликатов и самые большие файлы</li>
-        </ul>
-      </div>
-      <div class="card">
-        <div class="kicker">Приложения</div>
-        <h3>Менеджер приложений</h3>
-        <p>Размеры, кэш и данные по каждому пакету, опасные разрешения, удаление и переход в настройки.</p>
-        <ul>
-          <li>сортировка по размеру, имени и дате</li>
-          <li>фильтр «пользовательские / системные»</li>
-          <li>остатки после удаления и автозапуск</li>
-        </ul>
-      </div>
-      <div class="card">
-        <div class="kicker">3D</div>
-        <h3>Разбор устройства</h3>
-        <p>Двенадцать узлов: экран, аккумулятор, катушка заряда, плата с чипами, камеры, динамик, микрофоны,
-        датчики, разъём, антенны, охлаждение и корпус.</p>
-        <ul>
-          <li>послойный разбор с подписями деталей</li>
-          <li>карточка данных у каждого узла</li>
-          <li>галерея из 20 реальных моделей в GLB</li>
-        </ul>
-      </div>
-      <div class="card">
-        <div class="kicker">Каталог</div>
-        <h3>Сравнение смартфонов</h3>
-        <p>Ваше устройство против двух соперников: экран, чип, память, камеры, питание, корпус.</p>
-        <ul>
-          <li>каталог на 10 315 моделей с 2016 по 2026 год</li>
-          <li>6 431 модель с подробными полями</li>
-          <li>лучшее значение в строке подсвечивается</li>
-        </ul>
-      </div>
-      <div class="card">
-        <div class="kicker">Порядок</div>
-        <h3>Оптимизатор и приватность</h3>
-        <p>Мусор, кэши, пустые папки; аудит из 16 проверок безопасности с оценкой и понятными пояснениями.</p>
-        <ul>
-          <li>очистка только явно выбранных файлов</li>
-          <li>проверка отладки, патча безопасности, прав</li>
-          <li>экспорт отчёта в Markdown</li>
-        </ul>
-      </div>
-    </div>
+<section class="wrap" id="features">
+  <h2>Возможности</h2>
+  <p class="sub">Всё, что обычно спрятано в системе, — на одном экране и с пояснением к каждому параметру.</p>
+  <div class="grid g3">
+    <div class="card"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="7" y="7" width="10" height="10" rx="2"/><path d="M10 3v2M14 3v2M10 19v2M14 19v2M3 10h2M3 14h2M19 10h2M19 14h2"/></svg></div>
+      <h3>Паспорт устройства</h3><p>Маркетинговое имя чипа, техпроцесс, графическое ядро, кластеры и частота каждого ядра. База на 120+ процессоров.</p></div>
+    <div class="card"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M3 12h3.5l2.5-6 3 12 2.5-8 2 4H21"/></svg></div>
+      <h3>Монитор</h3><p>Нагрузка и частоты, память, диски, сеть, температура — в реальном времени, с плавающим окном поверх приложений.</p></div>
+    <div class="card"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="3" y="4" width="18" height="13" rx="2"/><path d="M8 21h8M12 17v4"/></svg></div>
+      <h3>Экран</h3><p>Разрешение, плотность, диагональ, все частоты обновления и режимы, HDR10 / HDR10+ / Dolby Vision, охват цвета.</p></div>
+    <div class="card"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="2" y="7" width="16" height="10" rx="3"/><path d="M21 10v4"/><path d="M6 11v2M10 11v2"/></svg></div>
+      <h3>Батарея</h3><p>Проектная и фактическая ёмкость, износ, циклы, температура, напряжение и ток заряда, модель аккумулятора.</p></div>
+    <div class="card"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="12" cy="12" r="3"/><path d="M3 8.5h3l2-2h8l2 2h3v10H3z"/></svg></div>
+      <h3>Камеры</h3><p>Все модули, которые видит система: мегапиксели, видео до 4K, диафрагма, фокусное, сенсор, стабилизация, RAW.</p></div>
+    <div class="card"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="12" cy="12" r="8"/><path d="M12 12h8"/><path d="M12 4v8l6 6"/></svg></div>
+      <h3>Датчики и связь</h3><p>Полный список датчиков с производителем и частотой, Wi-Fi, сотовая сеть, Bluetooth, NFC, GPS, USB, eSIM.</p></div>
+    <div class="card"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M4 19V5"/><path d="M4 19h16"/><path d="M7 15l4-5 3 3 4-6"/></svg></div>
+      <h3>Сравнение</h3><p>Ваш аппарат против двух моделей из каталога на 10 000+ устройств: экран, производительность, камеры, питание, поддержка.</p></div>
+    <div class="card"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M20 6 9 17l-5-5"/></svg></div>
+      <h3>Проверка</h3><p>Восемь тестов компонентов с вердиктом «Пройдено / Есть проблема», стресс-проверка и отчёт в Markdown.</p></div>
+    <div class="card"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M12 3l8 3v6c0 5-3.4 8.2-8 9-4.6-.8-8-4-8-9V6z"/><path d="m9 12 2 2 4-4"/></svg></div>
+      <h3>Приватность</h3><p>Данные не покидают устройство: без аккаунтов, подписок и телеметрии. Аудит безопасности и патч-уровня.</p></div>
   </div>
 </section>
 
-<section id="screens">
-  <div class="wrap">
-    <h2>Экраны</h2>
-    <p class="sub">Реальные снимки с устройства. Нажмите на любой, чтобы открыть крупнее.</p>
-    <div class="shots">
-      <figure class="shot"><img src="img/home.jpg" alt="Главная"><figcaption>Главная · сводка и внимание</figcaption></figure>
-      <figure class="shot"><img src="img/monitor.jpg" alt="Монитор"><figcaption>Монитор · обзор ресурсов</figcaption></figure>
-      <figure class="shot"><img src="img/storage.jpg" alt="Хранилище"><figcaption>Хранилище устройства</figcaption></figure>
-      <figure class="shot"><img src="img/map.jpg" alt="Карта памяти"><figcaption>Карта памяти · кольцо</figcaption></figure>
-      <figure class="shot"><img src="img/files.jpg" alt="Типы файлов"><figcaption>Типы файлов и дубликаты</figcaption></figure>
-      <figure class="shot"><img src="img/apps.jpg" alt="Приложения"><figcaption>Приложения · фильтры и размеры</figcaption></figure>
-      <figure class="shot"><img src="img/appcard.jpg" alt="Карточка приложения"><figcaption>Карточка приложения</figcaption></figure>
-      <figure class="shot"><img src="img/compare.jpg" alt="Сравнение"><figcaption>Сравнение со смартфоном</figcaption></figure>
-      <figure class="shot"><img src="img/settings.jpg" alt="Настройки"><figcaption>Настройки и разрешения</figcaption></figure>
-      <figure class="shot"><img src="img/drawer.jpg" alt="Меню"><figcaption>Меню разделов</figcaption></figure>
-    </div>
+<section class="wrap" id="shots">
+  <h2>Скриншоты</h2>
+  <p class="sub">Тёмная тема по умолчанию, светлая и «Металл» — в настройках.</p>
+  <div class="shots">
+    <figure><img src="img/s1-home.jpg" alt="Главная"><figcaption><b>Главная</b> — состояние устройства</figcaption></figure>
+    <figure><img src="img/s2-hardware.jpg" alt="Железо"><figcaption><b>Железо</b> — паспорт и чип</figcaption></figure>
+    <figure><img src="img/s3-monitor.jpg" alt="Монитор"><figcaption><b>Монитор</b> — ЦП, память, сеть</figcaption></figure>
+    <figure><img src="img/s4-compare.jpg" alt="Сравнение"><figcaption><b>Сравнение</b> — с каталогом моделей</figcaption></figure>
+    <figure><img src="img/s5-tester.jpg" alt="Проверка"><figcaption><b>Проверка</b> — восемь тестов</figcaption></figure>
+    <figure><img src="img/s8-about.jpg" alt="О программе"><figcaption><b>О программе</b> — проекты и поддержка</figcaption></figure>
   </div>
 </section>
 
-<section id="data">
-  <div class="wrap">
-    <h2>Откуда данные</h2>
-    <p class="sub">Никакой аналитики и сетевых запросов. Всё, что показано, читается с устройства или лежит в приложении.</p>
-    <div class="two">
-      <div>
-        <table>
-          <tr><th>Раздел</th><th>Источник</th></tr>
-          <tr><td class="n">Процессор</td><td>cpufreq, time_in_state; при закрытом /proc — оценка по частотам</td></tr>
-          <tr><td class="n">Память</td><td>ActivityManager, MemInfo</td></tr>
-          <tr><td class="n">Накопители</td><td>StorageManager, StorageStatsManager</td></tr>
-          <tr><td class="n">Батарея</td><td>BatteryManager: заряд, температура, напряжение, износ</td></tr>
-          <tr><td class="n">Камеры</td><td>Camera2: мегапиксели, диафрагма, размер сенсора</td></tr>
-          <tr><td class="n">Экран</td><td>DisplayMetrics, режимы обновления</td></tr>
-          <tr><td class="n">Приложения</td><td>PackageManager, UsageStats (по разрешению)</td></tr>
-          <tr><td class="n">Каталог телефонов</td><td>открытые наборы спецификаций, вшиты в приложение</td></tr>
-        </table>
-      </div>
-      <div>
-        <div class="card" style="margin-bottom:16px">
-          <h3>Честные ограничения</h3>
-          <p>Android 8+ скрывает чужие процессы, поэтому в «Процессах» виден только свой процесс и приложения,
-          которые работали за сутки. Полный список требует root, ADB или Shizuku.</p>
-        </div>
-        <div class="card">
-          <h3>Разрешения — по требованию</h3>
-          <p>Базовые функции работают без разрешений. Доступ к файлам, статистике использования, камере или
-          микрофону запрашивается только при открытии соответствующего раздела и объясняется на месте.</p>
-        </div>
-      </div>
-    </div>
+<section class="wrap">
+  <h2>Планшетный режим</h2>
+  <p class="sub">От 600 dp интерфейс раскрывается: карточки просторнее, таблицы шире, навигация под рукой.</p>
+  <div class="tablet">
+    <figure><img src="img/s6-tablet-hardware.jpg" alt="Железо на планшете"><figcaption><b>Железо</b> на широком экране</figcaption></figure>
+    <figure><img src="img/s7-tablet-monitor.jpg" alt="Монитор на планшете"><figcaption><b>Монитор</b> на широком экране</figcaption></figure>
   </div>
 </section>
 
-<section id="install">
-  <div class="wrap">
-    <h2>Статус и планы</h2>
-    <div class="two">
-      <div>
-        <p class="sub" style="margin-bottom:16px">Приложение в активной разработке: интерфейс и модули дорабатываются,
-        сборки пока не публикуются. Когда будет готово — здесь появится ссылка и список изменений.</p>
-        <table>
-          <tr><th>Этап</th><th>Состояние</th></tr>
-          <tr><td class="n">Монитор, хранилище, приложения</td><td>готово</td></tr>
-          <tr><td class="n">Разбор устройства в 3D</td><td>готово, 12 узлов</td></tr>
-          <tr><td class="n">Сравнение смартфонов</td><td>готово, 10 315 моделей</td></tr>
-          <tr><td class="n">Аудит приватности и тесты</td><td>готово</td></tr>
-          <tr><td class="n">Полировка интерфейса</td><td>в работе</td></tr>
-          <tr><td class="n">Публичный релиз</td><td>по готовности</td></tr>
-        </table>
-      </div>
-      <div>
-        <div class="card" style="margin-bottom:16px">
-          <h3>Что уже работает</h3>
-          <p>Мониторинг ресурсов, карта памяти с навигацией по папкам, менеджер приложений с размерами и правами,
-          трёхмерный разбор с двенадцатью узлами, сравнение с каталогом характеристик, аудит из шестнадцати проверок.</p>
-        </div>
-        <div class="card">
-          <h3>Что дальше</h3>
-          <p>Выравнивание интерфейса по единой сетке, ускорение сканирования хранилища, новые узлы в 3D-разборе
-          и заполнение пробелов в каталоге характеристик.</p>
-        </div>
-      </div>
-    </div>
+<section class="wrap" id="projects">
+  <h2>Другие проекты</h2>
+  <p class="sub">Приложения того же автора.</p>
+  <div class="projects">
+    <a class="proj" href="https://github.com/EnterPC-Core/EnterpriseCore-Releases">
+      <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M13 2 4 14h6l-1 8 9-12h-6z"/></svg></span>
+      <span><b>Enterprise Core</b><span>Android-релизы: сборки и обновления</span></span>
+      <span class="go">↗</span>
+    </a>
+    <a class="proj" href="https://github.com/EnterPC-Core/EnterpriseShield-Android/releases">
+      <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M12 3l8 3v6c0 5-3.4 8.2-8 9-4.6-.8-8-4-8-9V6z"/></svg></span>
+      <span><b>Enterprise Shield</b><span>Сетевой клиент: профили, маршрутизация</span></span>
+      <span class="go">↗</span>
+    </a>
+    <a class="proj" href="https://github.com/EnterPC-Core/EnterpriseHub-Releases">
+      <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="3" y="3" width="7" height="7" rx="2"/><rect x="14" y="3" width="7" height="7" rx="2"/><rect x="3" y="14" width="7" height="7" rx="2"/><rect x="14" y="14" width="7" height="7" rx="2"/></svg></span>
+      <span><b>Enterprise Hub</b><span>Релизы этого приложения</span></span>
+      <span class="go">↗</span>
+    </a>
   </div>
 </section>
 
-<section>
-  <div class="wrap">
-    <h2>Вопросы</h2>
-    <div class="two">
-      <div>
-        <h3 style="font-size:15px;margin:0 0 6px">Почему такая большая загрузка?</h3>
-        <p class="sub" style="margin:0 0 18px">Внутри — коллекция 3D-моделей смартфонов (20 штук, около 135 МБ исходников,
-        сжаты в приложении) и каталог характеристик на 10 315 моделей.</p>
-        <h3 style="font-size:15px;margin:0 0 6px">Нужен ли интернет?</h3>
-        <p class="sub" style="margin:0">Нет. Все данные локальные: телеметрия устройства, каталог и модели вшиты в APK.</p>
-      </div>
-      <div>
-        <h3 style="font-size:15px;margin:0 0 6px">Почему CPU показывает «оценка»?</h3>
-        <p class="sub" style="margin:0 0 18px">На части прошивок SELinux закрывает /proc/stat. Тогда загрузка считается
-        по частотам ядер; приложение честно помечает такой источник.</p>
-        <h3 style="font-size:15px;margin:0 0 6px">Данные уходят куда-то?</h3>
-        <p class="sub" style="margin:0">Нет ни аналитики, ни crash-репортов, ни сетевых вызовов.</p>
-      </div>
-    </div>
+<section class="wrap">
+  <div class="note">
+    <b>Лицензия.</b> Приложение распространяется по проприетарной лицензии: личное использование разрешено,
+    распространение и коммерческое использование — только с письменного разрешения автора.
+    Текст — в <a href="https://github.com/EnterPC-Core/EnterpriseHub-Releases/blob/main/LICENSE" style="color:var(--accent2)">LICENSE</a>.
   </div>
 </section>
 
 <footer>
-  <div class="wrap">
-    <div>Enterprise Hub · автор и разработчик: Стариков Дмитрий Сергеевич</div>
-    <div>Собрано для Android · 2026</div>
+  <div class="wrap foot-in">
+    <div>© 2026 Стариков Дмитрий Сергеевич · Enterprise Hub</div>
+    <div><a href="https://github.com/EnterPC-Core">GitHub</a> · <a href="https://github.com/EnterPC-Core/EnterpriseHub-Releases/releases">Релизы</a></div>
   </div>
 </footer>
 
-<div id="lb"><img alt=""></div>
-<script>
-document.querySelectorAll('.shot img').forEach(function (im) {
-  im.addEventListener('click', function () {
-    var lb = document.getElementById('lb');
-    lb.querySelector('img').src = im.src;
-    lb.classList.add('on');
-  });
-});
-document.getElementById('lb').addEventListener('click', function () { this.classList.remove('on'); });
-</script>
 </body>
 </html>
